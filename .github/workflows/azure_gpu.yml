@@ -15,8 +15,8 @@ on: push
 # 2. Change these variables for your configuration:
 env:
   AZURE_RESOURCE_GROUP: GpuCI   # set this to your Azure Resource group's name
-  # AZURE_VM_NAME: GpuVM-$GITHUB_SHA
-  AZURE_VM_NAME: GpuVM
+  AZURE_VM_NAME: GpuVM-$GITHUB_SHA
+  # AZURE_VM_NAME: GpuVM
   # AZURE_VM_SIZE: NC6_Promo
   AZURE_VM_SIZE: Standard_DS2_v2
 
@@ -45,7 +45,8 @@ jobs:
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world)
           echo $remote_output
-          echo $remote_output | grep '"message":'
+          which jq
+          echo $remote_output | jq
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
           echo "Deleting VM NIC"
@@ -56,7 +57,6 @@ jobs:
           az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
           echo "Deleting VNet"
           az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-
 
 # ***
 #   "value": [
