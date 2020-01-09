@@ -41,10 +41,19 @@ jobs:
           echo "Creating VM"
           az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size ${{ env.AZURE_VM_SIZE }} --admin-username gpuciadmin --generate-ssh-keys --ephemeral-os-disk true
           echo "Running remote script"
+          ls -alh $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
+          chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
+          echo "Deleting VM NIC"
+          az network nic delete --name ${{ env.AZURE_VM_NAME }}VMNIC --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
+          echo "Deleting VM IP"
+          az network public-ip delete --name ${{ env.AZURE_VM_NAME }}PublicIP --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
           echo "Deleting NSG"
           az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
+          echo "Deleting VNet"
+          az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
+
 
 # az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
