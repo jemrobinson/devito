@@ -14,8 +14,10 @@ on: push
 # This will output some JSON which you should add to your GitHub repository as a secret called "AZURE_CREDENTIALS"
 # 2. Change these variables for your configuration:
 env:
-  AZURE_RESOURCE_GROUP: GpuCI   # set this to your Azure Resource group's name
+  AZURE_RESOURCE_GROUP: GpuCItest   # set this to your Azure Resource group's name
   AZURE_VM_NAME: GpuVM
+  # AZURE_VM_SIZE: NC6_Promo
+  AZURE_VM_SIZE: Standard_DS2_v2
 
 jobs:
   build-and-deploy-to-dev:
@@ -37,13 +39,7 @@ jobs:
         inlineScript: |
           az account show
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
-          az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin --generate-ssh-keys
+          az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size ${{ env.AZURE_VM_SIZE }} --admin-username gpuciadmin --generate-ssh-keys --ephemeral-os-disk true
           az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
+          az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts '$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh' --parameters hello world
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-
-    # az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size NC6_Promo --admin-username gpuciadmin --ephemeral-os-disk true
-
-    # - uses: azure/webapps-container-deploy@v1
-    #   with:
-    #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
-    #     images: '${{ env.CONTAINER_REGISTRY }}/app:latest'
