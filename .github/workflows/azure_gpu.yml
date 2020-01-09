@@ -25,6 +25,7 @@ jobs:
    # Authentication
     - uses: azure/login@v1
       with:
+        azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS  }}
 
     # Provision a new VM
@@ -34,7 +35,9 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-        #   az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  -i nginx
+          az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size Standard_DS2_v2
+          az vm run-command invoke --name GpuVM --resource-group GpuCI --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
+
 
     # - uses: azure/webapps-container-deploy@v1
     #   with:
