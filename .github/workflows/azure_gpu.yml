@@ -1,0 +1,47 @@
+name: Workflow to Create an Azure VM.
+
+on: push
+
+# CONFIGURATION
+# For help, go to https://github.com/Azure/Actions
+#
+# Set up the following secrets in your repository:
+#   AZURE_CREDENTIALS, REGISTRY_USERNAME, REGISTRY_PASSWORD, AZURE_DEVOPS_TOKEN
+# 2. Change these variables for your configuration:
+env:
+  AZURE_RESOURCE_GROUP: GpuTest   # set this to your Azure Resource group's name
+
+jobs:
+  build-and-deploy-to-dev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+   # Authentication
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+    # - uses: azure/docker-login@v1
+    #   with:
+    #     login-server: ${{ env.CONTAINER_REGISTRY }}
+    #     username: ${{ secrets.REGISTRY_USERNAME }}
+    #     password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    # # Authentication
+    # - run: |
+    #     docker build . -t ${{ env.CONTAINER_REGISTRY }}/app:latest
+    #     docker push ${{ env.CONTAINER_REGISTRY }}/app:latest
+
+    # Provision a new VM
+    - name: Azure CLI script to create a new VM
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az account show
+        #   az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }}  -i nginx
+
+    # - uses: azure/webapps-container-deploy@v1
+    #   with:
+    #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+    #     images: '${{ env.CONTAINER_REGISTRY }}/app:latest'
