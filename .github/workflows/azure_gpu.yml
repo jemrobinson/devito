@@ -44,9 +44,9 @@ jobs:
           ls -alh $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world)
-          echo $remote_output
-          which jq
-          echo $remote_output | jq
+          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq
+          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq '.'
+          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq '.[0]'
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
           echo "Deleting VM NIC"
