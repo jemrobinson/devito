@@ -26,7 +26,7 @@ jobs:
     - uses: azure/login@v1
       with:
         azcliversion: latest
-        creds: ${{ secrets.AZURE_CREDENTIALS  }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
@@ -35,10 +35,10 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-          az vm delete --name GpuVM --resource-group GpuCI --yes
-          az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin
-          az vm run-command invoke --name GpuVM --resource-group GpuCI --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
-          az vm delete --name GpuVM --resource-group GpuCI
+          az vm delete --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
+          az vm create --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin --generate-ssh-keys
+          az vm run-command invoke --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
+          az vm delete --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
 
     # az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size NC6_Promo --admin-username gpuciadmin --ephemeral-os-disk true
 
