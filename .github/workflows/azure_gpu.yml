@@ -45,6 +45,6 @@ jobs:
           # az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size ${{ env.AZURE_VM_SIZE }} --admin-username gpuciadmin --generate-ssh-keys --ephemeral-os-disk true
           # az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
-          # az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
+          az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
 
 # az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
