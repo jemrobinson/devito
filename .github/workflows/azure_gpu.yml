@@ -58,17 +58,17 @@ jobs:
           az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
 
 
-***
-  "value": [
-    ***
-      "code": "ProvisioningState/succeeded",
-      "displayStatus": "Provisioning succeeded",
-      "level": "Info",
-      "message": "Enable succeeded: \n[stdout]\nIn azure_gpu.sh\n\nEnd azure_gpu.sh\n\n[stderr]\n",
-      "time": null
-    ***
-  ]
-***
+# ***
+#   "value": [
+#     ***
+#       "code": "ProvisioningState/succeeded",
+#       "displayStatus": "Provisioning succeeded",
+#       "level": "Info",
+#       "message": "Enable succeeded: \n[stdout]\nIn azure_gpu.sh\n\nEnd azure_gpu.sh\n\n[stderr]\n",
+#       "time": null
+#     ***
+#   ]
+# ***
 
 
 # az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @{$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh} --parameters hello world
