@@ -43,7 +43,7 @@ jobs:
           echo "Running remote script"
           ls -alh $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
-          az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @{$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh} --parameters hello world
+          az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
           echo "Deleting VM NIC"
@@ -56,4 +56,5 @@ jobs:
           az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
 
 
+# az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @{$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh} --parameters hello world
 # az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
