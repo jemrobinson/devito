@@ -35,9 +35,12 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-          az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size Standard_DS2_v2
+          az vm delete --name GpuVM --resource-group GpuCI --yes
+          az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin
           az vm run-command invoke --name GpuVM --resource-group GpuCI --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
+          az vm delete --name GpuVM --resource-group GpuCI
 
+    # az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size NC6_Promo --admin-username gpuciadmin --ephemeral-os-disk true
 
     # - uses: azure/webapps-container-deploy@v1
     #   with:
