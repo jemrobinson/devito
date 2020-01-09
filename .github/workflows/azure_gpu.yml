@@ -15,6 +15,7 @@ on: push
 # 2. Change these variables for your configuration:
 env:
   AZURE_RESOURCE_GROUP: GpuCI   # set this to your Azure Resource group's name
+  AZURE_VM_NAME: GpuVM
 
 jobs:
   build-and-deploy-to-dev:
@@ -35,10 +36,10 @@ jobs:
         azcliversion: latest
         inlineScript: |
           az account show
-          az vm delete --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes
-          az vm create --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin --generate-ssh-keys
-          az vm run-command invoke --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
-          az vm delete --name GpuVM --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+          az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
+          az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size Standard_DS2_v2 --admin-username gpuciadmin --generate-ssh-keys
+          az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
+          az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
 
     # az vm create --name GpuVM --resource-group GpuCI --image UbuntuLTS --size NC6_Promo --admin-username gpuciadmin --ephemeral-os-disk true
 
