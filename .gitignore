@@ -11,3 +11,5 @@ docs/_build
 devito.egg-info/*
 
 .python-version
+
+.DS_Store*
