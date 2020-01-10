@@ -60,7 +60,7 @@ jobs:
 # -v "/home/runner/work/_temp/_github_home":"/github/home"
 # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
 # -v "/home/runner/work/devito/devito":"/github/workspace"
-# test
+# tes
 
     # # Provision a new VM
     # - name: Azure CLI script to create a new VM
