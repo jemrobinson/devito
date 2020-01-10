@@ -36,13 +36,17 @@ jobs:
 
     - run: |
         ls -alh /home/runner/.azure
-        echo "access tokens"
+
+    - run: |
         cat /home/runner/.azure/accessTokens.json
-        echo "json"
+
+    - run: |
         cat /home/runner/.azure/az.json
-        echo "sess"
+
+    - run: |
         cat /home/runner/.azure/az.sess
-        echo "azureProfile"
+
+    - run: |
         cat /home/runner/.azure/azureProfile.json
 
     # Provision a new VM
