@@ -27,12 +27,12 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    # # Authentication
-    # - name: Login to Azure CLI
-    #   uses: azure/login@v1
-    #   with:
-    #     azcliversion: latest
-    #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # Authentication
+    - name: Login to Azure CLI
+      uses: azure/login@v1
+      with:
+        azcliversion: latest
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     # # Manually copy credentials for docker
     # - name: Pass Azure credentials to docker
