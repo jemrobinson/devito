@@ -46,7 +46,7 @@ jobs:
       uses: ResearchSoftwareActions/azure-vm-deploy@master
       id: createvm
       with:
-        azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+        azure-credentials: ${{ secrets.AZURE_CLIENT_ID }}
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
         azure-vm-name: ${{ env.AZURE_VM_NAME }}
         azure-vm-size: ${{ env.AZURE_VM_SIZE }}
