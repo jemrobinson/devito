@@ -36,6 +36,14 @@ jobs:
 
     - run:
         ls -alh /home/runner/.azure
+        echo "access tokens"
+        cat /home/runner/.azure/accessTokens.json
+        echo "json"
+        cat /home/runner/.azure/az.json
+        echo "sess"
+        cat /home/runner/.azure/az.sess
+        echo "azureProfile"
+        cat /home/runner/.azure/azureProfile.json
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
