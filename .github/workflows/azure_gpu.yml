@@ -34,27 +34,8 @@ jobs:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - run: |
-        mkdir -p /home/runner/work/_temp/_github_home/.azure
-
-    # cp -R /home/runner/.azure /home/runner/work/_temp/_github_home/.azure
-
-    # cp -R /home/runner/.azure/accessTokens.json /home/runner/work/_temp/_github_home
-
     # - run: |
-    #     ls -alh /home/runner/.azure
-
-    # - run: |
-    #     cat /home/runner/.azure/accessTokens.json
-
-    # - run: |
-    #     cat /home/runner/.azure/az.json
-
-    # - run: |
-    #     cat /home/runner/.azure/az.sess
-
-    # - run: |
-    #     cat /home/runner/.azure/azureProfile.json
+    #     mkdir -p /home/runner/work/_temp/_github_home/.azure
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
