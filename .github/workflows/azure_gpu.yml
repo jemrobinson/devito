@@ -16,10 +16,10 @@ on: push
 #
 env:
   AZURE_RESOURCE_GROUP: GpuCI        # set this to your Azure Resource group's name
-  AZURE_VM_NAME: GpuVM-${GITHUB_SHA} # set this to the name you would like the deployed VM to have
-  # AZURE_VM_SIZE: NC6_Promo
+  AZURE_VM_NAME: GpuVM               # set this to the name you would like the deployed VM to have
   AZURE_VM_SIZE: Standard_DS2_v2     # set this to the Azure VM size you would like to use
   PATH_TO_SCRIPT: $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh  # path to a script in the GitHub repository you would like to run remotely
+  # AZURE_VM_SIZE: NC6_Promo
 
 jobs:
   build-and-deploy-to-dev:
@@ -34,7 +34,7 @@ jobs:
       with:
         azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
-        azure-vm-name: ${{ env.AZURE_VM_NAME }}
+        azure-vm-name: ${{ env.AZURE_VM_NAME }}-${{ github.sha }}
         azure-vm-size: ${{ env.AZURE_VM_SIZE }}
 
     # Test outputs
