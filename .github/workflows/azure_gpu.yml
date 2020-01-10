@@ -34,17 +34,19 @@ jobs:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # # Manually copy credentials for docker
-    # - name: Pass Azure credentials to docker
-    #   run: |
-    #     mkdir -p /home/runner/work/_temp/_github_home/.azure && cp -R /home/runner/.azure/* /home/runner/work/_temp/_github_home/.azure
+    # Manually copy credentials for docker
+    - name: Pass Azure credentials to docker
+      run: |
+        ls -alh /home/runner/
+
+#        mkdir -p /home/runner/work/_temp/_github_home/.azure && cp -R /home/runner/.azure/* /home/runner/work/_temp/_github_home/.azure
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
       uses: ResearchSoftwareActions/azure-vm-deploy@master
       id: createvm
       with:
-        azure-credentials: ${{ secrets.AZURE_CREDENTIALS.clientId }}
+        azure-credentials: something-secret
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
         azure-vm-name: ${{ env.AZURE_VM_NAME }}
         azure-vm-size: ${{ env.AZURE_VM_SIZE }}
