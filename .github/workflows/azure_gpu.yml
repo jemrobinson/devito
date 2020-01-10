@@ -34,7 +34,7 @@ jobs:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - run:
+    - run: |
         ls -alh /home/runner/.azure
         echo "access tokens"
         cat /home/runner/.azure/accessTokens.json
