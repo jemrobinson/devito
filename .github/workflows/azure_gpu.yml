@@ -35,7 +35,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Provision a new VM
-    - uses: ResearchSoftwareActions/azure-vm-deploy@master
+      uses: ResearchSoftwareActions/azure-vm-deploy@master
       id: createvm
       with:
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
