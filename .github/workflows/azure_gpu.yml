@@ -35,19 +35,24 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - run: |
-        ls -alh /home/runner/.azure
+        cp -R /home/runner/.azure /home/runner/work/_temp/_github_home/.azure
 
-    - run: |
-        cat /home/runner/.azure/accessTokens.json
+    # cp -R /home/runner/.azure/accessTokens.json /home/runner/work/_temp/_github_home
 
-    - run: |
-        cat /home/runner/.azure/az.json
+    # - run: |
+    #     ls -alh /home/runner/.azure
 
-    - run: |
-        cat /home/runner/.azure/az.sess
+    # - run: |
+    #     cat /home/runner/.azure/accessTokens.json
 
-    - run: |
-        cat /home/runner/.azure/azureProfile.json
+    # - run: |
+    #     cat /home/runner/.azure/az.json
+
+    # - run: |
+    #     cat /home/runner/.azure/az.sess
+
+    # - run: |
+    #     cat /home/runner/.azure/azureProfile.json
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
