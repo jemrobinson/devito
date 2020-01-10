@@ -12,13 +12,14 @@ on: push
 # az ad sp create-for-rbac --name "http://GpuCI" --role contributor --scopes $rg --sdk-auth
 #
 # This will output some JSON which you should add to your GitHub repository as a secret called "AZURE_CREDENTIALS"
-# 2. Change these variables for your configuration:
+
+#
 env:
-  AZURE_RESOURCE_GROUP: GpuCI   # set this to your Azure Resource group's name
-  AZURE_VM_NAME: GpuVM-$GITHUB_SHA
-  # AZURE_VM_NAME: GpuVM
+  AZURE_RESOURCE_GROUP: GpuCI        # set this to your Azure Resource group's name
+  AZURE_VM_NAME: GpuVM-$GITHUB_SHA   # set this to the name you would like the deployed VM to have
   # AZURE_VM_SIZE: NC6_Promo
-  AZURE_VM_SIZE: Standard_DS2_v2
+  AZURE_VM_SIZE: Standard_DS2_v2     # set this to the Azure VM size you would like to use
+  PATH_TO_SCRIPT: $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh  # path to a script in the GitHub repository you would like to run remotely
 
 jobs:
   build-and-deploy-to-dev:
@@ -43,9 +44,11 @@ jobs:
 
           echo "Running remote script"
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
-          remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --query "value[0].message" --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world)
+          remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --query "value[0].message" --scripts @${{ env.PATH_TO_SCRIPT }} --parameters oh hello world)
           remote_output_without_stderr=${remote_output%%\\n\\n[stderr*}
           final_stdout_line=$(echo -e ${remote_output_without_stderr##*stdout]\\n} | tail -n 1)
+          echo $final_stdout_line
+          if [ "$final_stdout_line" -ne "SUCCESS" ]; then set -e o pipefail; fi
 
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
