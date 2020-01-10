@@ -47,6 +47,7 @@ jobs:
           echo "Running remote script"
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --query "value[0].message" --scripts @${{ env.PATH_TO_SCRIPT }} --parameters oh hello world)
+          echo "$remote_output"
           remote_output_without_stderr=${remote_output%%\\n\\n[stderr*}
           final_stdout_line=$(echo -e ${remote_output_without_stderr##*stdout]\\n} | tail -n 1)
           echo "$final_stdout_line"
