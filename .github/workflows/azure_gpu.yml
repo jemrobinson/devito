@@ -34,6 +34,9 @@ jobs:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - run:
+        ls -alh /home/runner/.azure
+
     # Provision a new VM
     - name: Azure CLI script to create a new VM
       uses: ResearchSoftwareActions/azure-vm-deploy@master
@@ -41,8 +44,7 @@ jobs:
       with:
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
         azure-vm-name: ${{ env.AZURE_VM_NAME }}
-        # azure-vm-size: ${{ env.AZURE_VM_SIZE }}
-        azure-vm-size: $HOME
+        azure-vm-size: ${{ env.AZURE_VM_SIZE }}
 
     # Test outputs
     - name: Test outputs
