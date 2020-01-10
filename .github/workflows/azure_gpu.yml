@@ -52,7 +52,6 @@ jobs:
     - name: Test outputs
       run: echo "The stdout was ${{ steps.createvm.outputs.stdout }}"
 
-
 # default mount
 # -v "/var/run/docker.sock":"/var/run/docker.sock"
 # -v "/home/runner/work/_temp/_github_home":"/github/home"
