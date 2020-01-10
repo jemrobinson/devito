@@ -48,6 +48,12 @@ jobs:
       run: echo "The stdout was ${{ steps.createvm.outputs.stdout }}"
 
 
+# default mounts
+# -v "/var/run/docker.sock":"/var/run/docker.sock"
+# -v "/home/runner/work/_temp/_github_home":"/github/home"
+# -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
+# -v "/home/runner/work/devito/devito":"/github/workspace"
+
     # # Provision a new VM
     # - name: Azure CLI script to create a new VM
     #   uses: azure/CLI@v1
