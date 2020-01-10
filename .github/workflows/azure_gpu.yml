@@ -42,7 +42,7 @@ jobs:
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
         azure-vm-name: ${{ env.AZURE_VM_NAME }}
         # azure-vm-size: ${{ env.AZURE_VM_SIZE }}
-        azure-vm-size: ${{ env.HOME }}
+        azure-vm-size: $HOME
 
     # Test outputs
     - name: Test outputs
