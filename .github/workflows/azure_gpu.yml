@@ -40,13 +40,13 @@ jobs:
         inlineScript: |
           echo "Creating VM"
           az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size ${{ env.AZURE_VM_SIZE }} --admin-username gpuciadmin --generate-ssh-keys --ephemeral-os-disk true
+
           echo "Running remote script"
-          ls -alh $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
-          remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world)
-          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq
-          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq '.'
-          echo $remote_output | sed "s|\*\*\*||g" | sed "s|\[|{|g" | sed "s|\]|}|g" | jq '.[0]'
+          remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --query "value[0].message" --scripts @$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh --parameters hello world)
+          remote_output_without_stderr=${remote_output%%\\n\\n[stderr*}
+          final_stdout_line=$(echo -e ${remote_output_without_stderr##*stdout]\\n} | tail -n 1)
+
           echo "Deleting VM"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
           echo "Deleting VM NIC"
@@ -57,19 +57,3 @@ jobs:
           az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
           echo "Deleting VNet"
           az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-
-# ***
-#   "value": [
-#     ***
-#       "code": "ProvisioningState/succeeded",
-#       "displayStatus": "Provisioning succeeded",
-#       "level": "Info",
-#       "message": "Enable succeeded: \n[stdout]\nIn azure_gpu.sh\n\nEnd azure_gpu.sh\n\n[stderr]\n",
-#       "time": null
-#     ***
-#   ]
-# ***
-
-
-# az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts @{$GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh} --parameters hello world
-# az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --scripts 'echo $1 $2' --parameters hello world
