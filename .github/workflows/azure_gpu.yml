@@ -42,21 +42,23 @@ jobs:
           echo "Creating VM"
           az vm create --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --image UbuntuLTS --size ${{ env.AZURE_VM_SIZE }} --admin-username gpuciadmin --generate-ssh-keys --ephemeral-os-disk true
 
+          echo "Compress the checked-out repository and send this to the newly-created VM"
+
           echo "Running remote script"
           chmod a+x $GITHUB_WORKSPACE/.github/scripts/azure_gpu.sh
           remote_output=$(az vm run-command invoke --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --command-id RunShellScript --query "value[0].message" --scripts @${{ env.PATH_TO_SCRIPT }} --parameters oh hello world)
           remote_output_without_stderr=${remote_output%%\\n\\n[stderr*}
           final_stdout_line=$(echo -e ${remote_output_without_stderr##*stdout]\\n} | tail -n 1)
-          echo $final_stdout_line
-          if [ "$final_stdout_line" -ne "SUCCESS" ]; then set -e o pipefail; fi
+          echo "$final_stdout_line"
+          if [[ "$final_stdout_line" -ne "SUCCESS" ]]; then set -e o pipefail; fi
 
-          echo "Deleting VM"
+          echo "Deleting VM: ${{ env.AZURE_VM_NAME }}"
           az vm delete --name ${{ env.AZURE_VM_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --yes
-          echo "Deleting VM NIC"
+          echo "Deleting network card: ${{ env.AZURE_VM_NAME }}VMNIC"
           az network nic delete --name ${{ env.AZURE_VM_NAME }}VMNIC --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-          echo "Deleting VM IP"
+          echo "Deleting public IP address: ${{ env.AZURE_VM_NAME }}PublicIP"
           az network public-ip delete --name ${{ env.AZURE_VM_NAME }}PublicIP --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-          echo "Deleting NSG"
+          echo "Deleting network security group: ${{ env.AZURE_VM_NAME }}NSG"
           az network nsg delete --name ${{ env.AZURE_VM_NAME }}NSG --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
-          echo "Deleting VNet"
+          echo "Deleting virtual network: ${{ env.AZURE_VM_NAME }}VNET"
           az network vnet delete --name ${{ env.AZURE_VM_NAME }}VNET --resource-group ${{ env.AZURE_RESOURCE_GROUP }}
