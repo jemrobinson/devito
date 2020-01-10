@@ -35,7 +35,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - run: |
-        mkdir -P /home/runner/work/_temp/_github_home/.azure
+        mkdir -p /home/runner/work/_temp/_github_home/.azure
 
     # cp -R /home/runner/.azure /home/runner/work/_temp/_github_home/.azure
 
