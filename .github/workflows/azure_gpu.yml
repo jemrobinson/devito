@@ -34,7 +34,7 @@ jobs:
       with:
         azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
-        azure-vm-name: ${{ env.AZURE_VM_NAME }}-$GITHUB_SHA
+        azure-vm-name: ${{ env.AZURE_VM_NAME }} #-$GITHUB_SHA
         azure-vm-size: ${{ env.AZURE_VM_SIZE }}
 
     # Test outputs
