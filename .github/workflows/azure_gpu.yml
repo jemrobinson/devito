@@ -48,7 +48,7 @@ jobs:
       run: echo "The stdout was ${{ steps.createvm.outputs.stdout }}"
 
 
-# default mounts
+# default mount
 # -v "/var/run/docker.sock":"/var/run/docker.sock"
 # -v "/home/runner/work/_temp/_github_home":"/github/home"
 # -v "/home/runner/work/_temp/_github_workflow":"/github/workflow"
