@@ -44,7 +44,7 @@ jobs:
 
     # Test outputs
     - name: Test outputs
-        run: echo "The stdout was ${{ steps.createvm.outputs.stdout }}"
+      run: echo "The stdout was ${{ steps.createvm.outputs.stdout }}"
 
 
     # # Provision a new VM
