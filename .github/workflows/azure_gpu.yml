@@ -34,8 +34,10 @@ jobs:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # - run: |
-    #     mkdir -p /home/runner/work/_temp/_github_home/.azure
+    # Manually copy credentials for docker
+    - name: Pass Azure credentials to docker
+      run: |
+        mkdir -p /home/runner/work/_temp/_github_home/.azure && cp -R /home/runner/.azure/* /home/runner/work/_temp/_github_home/.azure
 
     # Provision a new VM
     - name: Azure CLI script to create a new VM
