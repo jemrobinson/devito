@@ -27,15 +27,15 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-   # Authentication
-    - uses: azure/login@v1
+    # Authentication
+    - name: Azure CLI script to create a new VM
+      uses: azure/login@v1
       with:
         azcliversion: latest
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    # Provision a new VM
-    - name: Azure CLI script to create a new VM
-      uses: ResearchSoftwareActions/azure-vm-deploy@master
+      # Provision a new VM
+    - uses: ResearchSoftwareActions/azure-vm-deploy@master
       id: createvm
       with:
         azure-resource-group: ${{ env.AZURE_RESOURCE_GROUP }}
